@@ -15,7 +15,7 @@
   ],
   "author": "Xavier Badosa",
   "license": "ISC",
-  "repository": "github:badosa/JSON-stat",
+  "repository": "github:jsonstat/explorer",
   "dependencies": {
     "@babel/core": "^7.8.3",
     "babel-loader": "^8.0.6",
