@@ -2,7 +2,7 @@ The **JSON-stat Explorer** allows you to retrieve a [JSON-stat document](https:/
 
 It is mainly designed to display JSON-stat **datasets** but it also accepts JSON-stat **collections** or **bundles**. If the input is a bundle, the content of the first dataset in it will be automatically displayed.
 
-Developed using the [JSON-stat Javascript Toolkit](https://www.npmjs.com/package/jsonstat-toolkit), the [JSON-stat Javascript Utilities Suite](https://www.npmjs.com/package/jsonstat-suite) and the [React library](https://reactjs.org), you can try it at 
+Developed using the [JSON-stat Javascript Toolkit](https://www.npmjs.com/package/jsonstat-toolkit), the [JSON-stat Javascript Utilities Suite](https://www.npmjs.com/package/jsonstat-suite) and the [React library](https://reactjs.org), you can try it at:
 
 https://jsonstat.com/explorer/
 
