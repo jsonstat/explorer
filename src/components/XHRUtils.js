@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import JSONstat from "jsonstat-toolkit";
-import JSONstatUtils from "jsonstat-suite";
+import {fromCSV, fromSDMX} from "jsonstat-suite";
 
 const getMessage=function(status){
   let msg=null;
@@ -32,14 +32,14 @@ const fetchJsonStat=function(that, loadData, method, url, query, text){
       //CSV-stat? v.0.3.0
       if(typeof json==="string"){
         type=(json.trim().slice(0,8)==="jsonstat") ? "CSV-stat" : "CSV";
-        json=JSONstatUtils.fromCSV(json);
+        json=fromCSV(json);
       }else{
         //SDMX-JSON? v.0.2.0
         if(json.hasOwnProperty("structure") && json.hasOwnProperty("dataSets") //Could also be a weird JSON-stat bundle
             && Array.isArray(json.dataSets) && json.dataSets.length===1 //Only support for 1 dataset
             && json.dataSets[0].hasOwnProperty("observations")//Only flat flavor is supported (no series) (better look for dataset with "action": "Information"?)
           ){
-    			 json=JSONstatUtils.fromSDMX(json);
+    			 json=fromSDMX(json);
            type="SDMX-JSON";
     		}
       }

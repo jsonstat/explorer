@@ -1,6 +1,6 @@
 {
   "name": "jsonstat-explorer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An interactive viewer for JSON-stat/CSV-stat/SDMX-JSON responses or documents.",
   "scripts": {
     "build": "webpack --mode=production",
@@ -11,7 +11,10 @@
     "viewer",
     "stats",
     "cube",
-    "opendata"
+    "opendata",
+    "csv",
+    "json",
+    "sdmx"
   ],
   "author": "Xavier Badosa",
   "license": "ISC",
