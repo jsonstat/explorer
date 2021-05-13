@@ -37,7 +37,6 @@ const fetchJsonStat=function(that, loadData, method, url, query, text){
         //SDMX-JSON? v.0.2.0
         if(json.hasOwnProperty("structure") && json.hasOwnProperty("dataSets") //Could also be a weird JSON-stat bundle
             && Array.isArray(json.dataSets) && json.dataSets.length===1 //Only support for 1 dataset
-            && json.dataSets[0].hasOwnProperty("observations")//Only flat flavor is supported (no series) (better look for dataset with "action": "Information"?)
           ){
     			 json=fromSDMX(json);
            type="SDMX-JSON";
