@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import JSONstat from "jsonstat-toolkit";
 import {fromCSV, fromSDMX} from "jsonstat-suite";
 
@@ -9,7 +8,7 @@ const getMessage=function(status){
   switch (status) {
     case "loading": msg=<span className="msg glyphicon glyphicon-refresh spinning"></span>; break;
     case "blank": msg=<span className="msg">Please, fill in all the inputs.</span>; break;
-    case "https": msg=<span className="msg">Security violation: You are trying to access an http address from an https one. Go to <a href="http://jsonstat.com/explorer/">http://jsonstat.com/explorer/</a>.</span>; break;
+    case "https": msg=<span className="msg">Security violation: You are trying to access an http address from an https one. Go to <a href="http://jsonstat.com/explorer/">http://jsonstat.com/explorer/</a></span>; break;
     case "jsonstaterror": msg=<span className="msg">No valid JSON-stat/CSV-stat/SDMX-JSON was returned!</span>; break;
     case "neterror": msg=<span className="msg">Network error! Check the address you supplied.</span>; break;
   }
@@ -38,9 +37,9 @@ const fetchJsonStat=function(that, loadData, method, url, query, text){
         if(json.hasOwnProperty("structure") && json.hasOwnProperty("dataSets") //Could also be a weird JSON-stat bundle
             && Array.isArray(json.dataSets) && json.dataSets.length===1 //Only support for 1 dataset
           ){
-    			 json=fromSDMX(json);
+           json=fromSDMX(json);
            type="SDMX-JSON";
-    		}
+        }
       }
 
       let data=JSONstat(json);
@@ -62,14 +61,31 @@ const fetchJsonStat=function(that, loadData, method, url, query, text){
       case "post":
         that.setState({status : "loading"});
 
-        //We send query as a string instead of JSON to avoid preflight issue on Chrome
-        axios.post(url, query)
-          .then(function(resp){
-            processData(resp.data);
-          })
-          .catch(function (error) {
-            that.setState({status : "neterror"});
-          });
+        // Send query as plain text to avoid preflight where possible.
+        fetch(url, {
+          method: "POST",
+          body: query,
+          headers: {
+            "Content-Type": "text/plain;charset=UTF-8"
+          },
+          // credentials: 'same-origin' // uncomment if you need cookies/auth included
+        })
+        .then(function(resp){
+          return resp.text();
+        })
+        .then(function(bodyText){
+          // Try to parse JSON first, otherwise treat as text (CSV, CSV-stat, ...)
+          let parsed;
+          try{
+            parsed = JSON.parse(bodyText);
+          }catch(e){
+            parsed = bodyText;
+          }
+          processData(parsed);
+        })
+        .catch(function (error) {
+          that.setState({status : "neterror"});
+        });
       break;
       case "paste":
         processData(
@@ -81,9 +97,18 @@ const fetchJsonStat=function(that, loadData, method, url, query, text){
       default: //get
         that.setState({status : "loading"});
 
-        axios.get(url)
+        fetch(url)
           .then(function(resp){
-            processData(resp.data);
+            return resp.text();
+          })
+          .then(function(bodyText){
+            let parsed;
+            try{
+              parsed = JSON.parse(bodyText);
+            }catch(e){
+              parsed = bodyText;
+            }
+            processData(parsed);
           })
           .catch(function (error) {
             that.setState({status : "neterror"});
