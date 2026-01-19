@@ -1,6 +1,6 @@
 {
   "name": "jsonstat-explorer",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "description": "An interactive viewer for JSON-stat/CSV-stat/SDMX-JSON responses or documents.",
   "scripts": {
     "build": "webpack --mode=production",
@@ -25,6 +25,7 @@
     "@babel/plugin-proposal-function-bind": "^7.12.13",
     "@babel/preset-env": "^7.13.12",
     "@babel/preset-react": "^7.13.13",
+    "axios": ">=0.21.1",
     "babel-cli": "^6.18.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-add-module-exports": "^1.0.4",
