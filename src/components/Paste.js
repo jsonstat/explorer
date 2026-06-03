@@ -7,15 +7,16 @@ export default class Paste extends React.Component {
     this.state = {
       status: "ok"
     };
+    this.jsonstat = React.createRef();
   }
 
   reset() {
-    this.refs.jsonstat.value="";
+    this.jsonstat.current.value="";
     fetchJsonStat(this, this.props.loadData, null);
   }
 
   submit() {
-    const jsonstat=this.refs.jsonstat;
+    const jsonstat=this.jsonstat.current;
 
     if(!jsonstat.value.trim()){
       this.setState({ status: "blank" });
@@ -35,7 +36,7 @@ export default class Paste extends React.Component {
   render() {
     return (
       <section id="form">
-        <textarea ref="jsonstat" aria-label="JSON-stat/CSV-stat/SDMX-JSON code" placeholder="JSON-stat/CSV-stat/SDMX-JSON code"></textarea>
+        <textarea ref={this.jsonstat} aria-label="JSON-stat/CSV-stat/SDMX-JSON code" placeholder="JSON-stat/CSV-stat/SDMX-JSON code"></textarea>
         <button aria-controls="content" className="btn btn-primary" onClick={this.submit.bind(this)}>Send</button>
         <button aria-controls="form content" className="btn reset" onClick={this.reset.bind(this)}>Reset</button> <div id="version">v. {this.props.version}</div>
         {getMessage(this.state.status)}

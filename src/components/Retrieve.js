@@ -8,6 +8,8 @@ export default class Retrieve extends React.Component {
       method: "get",
       status: "ok"
     };
+    this.url = React.createRef();
+    this.query = React.createRef();
   }
 
   handleMethod(e) {
@@ -17,10 +19,10 @@ export default class Retrieve extends React.Component {
   reset() {
     const method=this.state.method;
 
-    this.refs.url.value="";
+    this.url.current.value="";
 
     if(method==="post"){
-      this.refs.query.value="";
+      this.query.current.value="";
     }
 
     if(method==="get"){
@@ -37,14 +39,14 @@ export default class Retrieve extends React.Component {
 
   loadSample() {
     const protocol=(window.location.protocol==="https:") ? "https" : "http";
-    this.refs.url.value=protocol+"://json-stat.org/samples/canada.json";
+    this.url.current.value=protocol+"://json-stat.org/samples/canada.json";
   }
 
   submit() {
     const
       method=this.state.method,
-      url=this.refs.url ? this.refs.url.value.trim() : null,
-      query=this.refs.query ? this.refs.query.value.trim(): null,
+      url=this.url.current ? this.url.current.value.trim() : null,
+      query=this.query.current ? this.query.current.value.trim(): null,
       ok=(method==="get" && url)
         ||
         (method==="post" && url && query)
@@ -87,7 +89,7 @@ export default class Retrieve extends React.Component {
     ;
 
     if(url.match(re)){
-      this.refs.url.value=url;
+      this.url.current.value=url;
       this.submit();
     }
   }
@@ -102,10 +104,10 @@ export default class Retrieve extends React.Component {
           <span role="tab" aria-controls={this.state.method==="post" ? null : "form"} tabindex={this.state.method==="post" ? null : "0"} className={this.state.method==="post" ? "selected" : null} data-id="post" onClick={this.handleMethod.bind(this)} onKeyPress={e=>{if(e.key==="Enter"){this.handleMethod(e);}}}>POST</span>
           {this.state.method==="get" ? <a role="button" tabindex="0" onClick={this.loadSample.bind(this)} onKeyPress={e=>{if(e.key==="Enter"){this.loadSample(e);}}}>Load sample URL</a> : null}
         </div>
-        <input type="text" ref="url" aria-label="URL" autocomplete="off" placeholder="URL" onKeyPress={this.handleKeyPress.bind(this)} />
+        <input type="text" ref={this.url} aria-label="URL" autocomplete="off" placeholder="URL" onKeyPress={this.handleKeyPress.bind(this)} />
         {
           method==="post" ?
-            <textarea ref="query" aria-label="JSON query" placeholder="JSON query"></textarea>
+            <textarea ref={this.query} aria-label="JSON query" placeholder="JSON query"></textarea>
           :
           null
         }

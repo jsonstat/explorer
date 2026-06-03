@@ -22,7 +22,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: [["@babel/env", { "modules": "commonjs" }], '@babel/preset-react'],
-            plugins: ['add-module-exports','react-html-attrs', ['@babel/plugin-proposal-decorators', { 'legacy': true }], 'transform-class-properties', '@babel/plugin-proposal-function-bind'],
+            plugins: ['add-module-exports','react-html-attrs', ['@babel/plugin-proposal-decorators', { 'legacy': true }], '@babel/plugin-proposal-function-bind'],
           }
         }
       }
@@ -31,5 +31,9 @@ module.exports = {
   output: {
     path: __dirname + "/dist/",
     filename: "main.js"
+  },
+  performance: {
+    maxAssetSize: 512000,
+    maxEntrypointSize: 512000
   }
 };

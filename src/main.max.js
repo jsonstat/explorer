@@ -1,6 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import {createRoot} from "react-dom/client";
 
 import Layout from "./components/Layout";
 
-ReactDOM.render(<Layout/>, document.getElementById("app"));
+createRoot(document.getElementById("app")).render(<Layout/>);

@@ -1,7 +1,23 @@
 import React from "react";
-import axios from "axios";
 import JSONstat from "jsonstat-toolkit";
 import {fromCSV, fromSDMX} from "jsonstat-suite";
+
+const request=function(url, options){
+  return fetch(url, options).then(function(resp){
+    if(!resp.ok){
+      throw new Error("HTTP "+resp.status);
+    }
+
+    return resp.text().then(function(text){
+      //Mimic axios: return parsed JSON when possible, raw string otherwise
+      try{
+        return JSON.parse(text);
+      }catch(e){
+        return text;
+      }
+    });
+  });
+};
 
 const getMessage=function(status){
   let msg=null;
@@ -63,9 +79,9 @@ const fetchJsonStat=function(that, loadData, method, url, query, text){
         that.setState({status : "loading"});
 
         //We send query as a string instead of JSON to avoid preflight issue on Chrome
-        axios.post(url, query)
-          .then(function(resp){
-            processData(resp.data);
+        request(url, {method: "POST", body: query})
+          .then(function(json){
+            processData(json);
           })
           .catch(function (error) {
             that.setState({status : "neterror"});
@@ -81,9 +97,9 @@ const fetchJsonStat=function(that, loadData, method, url, query, text){
       default: //get
         that.setState({status : "loading"});
 
-        axios.get(url)
-          .then(function(resp){
-            processData(resp.data);
+        request(url)
+          .then(function(json){
+            processData(json);
           })
           .catch(function (error) {
             that.setState({status : "neterror"});
