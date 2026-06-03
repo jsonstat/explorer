@@ -27,7 +27,7 @@ export default class Data extends React.Component {
 
   render() {
     const
-      data=this.props.data,
+      data=this.props.data || [],
       len=data.length,
 
       filters=this.props.filters,
